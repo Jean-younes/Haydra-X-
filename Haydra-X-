@@ -1,0 +1,10 @@
+local rs=game:GetService("ReplicatedStorage")
+local Crypt=require(rs:WaitForChild("Crypt"))
+local remote=rs.remoteInterface.interactions.meleePlayer
+
+return function(plr)
+    local k1,k2,k3=Crypt.checkpublickeys()
+    local c=Crypt.crypt(k1,math.abs(plr.UserId)+k3,k2)
+    local p=plr.Character and plr.Character:FindFirstChild("RightUpperArm")
+    if p then remote:FireServer(1,c,p,p.CFrame) end
+end
