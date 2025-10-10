@@ -1,10 +1,11 @@
-local rs=game:GetService("ReplicatedStorage")
-local Crypt=require(rs:WaitForChild("Crypt"))
-local remote=rs.remoteInterface.interactions.meleePlayer
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Crypt = require(ReplicatedStorage:WaitForChild("Crypt"))
+local meleeRemote = ReplicatedStorage.remoteInterface.interactions.meleePlayer
 
-return function(plr)
-    local k1,k2,k3=Crypt.checkpublickeys()
-    local c=Crypt.crypt(k1,math.abs(plr.UserId)+k3,k2)
-    local p=plr.Character and plr.Character:FindFirstChild("RightUpperArm")
-    if p then remote:FireServer(1,c,p,p.CFrame) end
+local function fireAtTarget(target)
+local part = target.Character.RightUpperArm
+local k1, k2, k3 = Crypt.checkpublickeys()
+meleeRemote:FireServer(1, Crypt.crypt(k1, math.abs(target.UserId) + k3, k2), part, part.CFrame)
 end
